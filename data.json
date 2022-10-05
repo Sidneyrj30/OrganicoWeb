@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1,
+        "nome": "arroz",
+        "preco": 15.00
+    },
+    {
+        "id": 2,
+        "nome": "feijao",
+        "preco": 20.00
+    },
+    {
+        "id": 3,
+        "nome": "carne",
+        "preco": 30.00
+    },
+    {
+        "id": 4,
+        "nome": "cebola",
+        "preco": 5.56
+    }
+]

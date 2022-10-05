@@ -1,0 +1,8 @@
+{% extends 'layout.html' %}
+{% block body %}
+    <h1>Produtos</h1>
+    {% for produto in produtos %}
+        {{produto.nome}}
+        <br>
+    {% endfor %}
+{% endblock %}
