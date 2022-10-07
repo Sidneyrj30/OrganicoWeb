@@ -1,22 +1,22 @@
 [
     {
-        "id": 1,
-        "nome": "arroz",
-        "preco": 15.00
-    },
-    {
-        "id": 2,
-        "nome": "feijao",
-        "preco": 20.00
-    },
-    {
         "id": 3,
         "nome": "carne",
-        "preco": 30.00
+        "preco": 30.0
     },
     {
-        "id": 4,
-        "nome": "cebola",
-        "preco": 5.56
+        "id": 5,
+        "nome": "repolho",
+        "preco": 25.9
+    },
+    {
+        "id": 6,
+        "nome": "chinelo",
+        "preco": 12.0
+    },
+    {
+        "id": 7,
+        "nome": "kiwi",
+        "preco": 25.6
     }
 ]
