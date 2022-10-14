@@ -1,4 +1,5 @@
 from flask import Flask, render_template,request,redirect, flash
+from numpy import empty
 import pandas as pd
 
 app = Flask(__name__)
@@ -32,8 +33,11 @@ def cadastro():
 def cadastrado():
     global df
     argumentos = request.args.to_dict(True)
-    print(argumentos)
-    argumentos['id'] = [df['id'].max() + 1]
+    #print(argumentos)
+    if df.empty:
+        argumentos['id'] = [1]
+    else:
+        argumentos['id'] = [df['id'].max() + 1]
     df = pd.concat([df, pd.DataFrame(argumentos)], ignore_index=True)
     df.to_json('data.json', orient='records')
     return redirect('/cadastro')
