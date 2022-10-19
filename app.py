@@ -69,6 +69,7 @@ def adicionarCarrinho(id):
             id = 1
             produto = {"id": id , "nome": mask.nome.values[0], "preco": mask.preco.values[0], "quantidade": quantidade}
             Carrinho = Carrinho.append(produto, ignore_index=True)
+            flash(f"Você adicionou o produto {mask.nome.values[0]} com sucesso!")
             df.loc[mask2, 'quantidade'] =  df.loc[mask2, 'quantidade'].values[0] - quantidade #diminuir quantidade produto
             print(df)
         else:
@@ -77,12 +78,14 @@ def adicionarCarrinho(id):
                 id = Carrinho['id'].max() + 1
                 produto = {"id": id , "nome": mask.nome.values[0], "preco": mask.preco.values[0], "quantidade": quantidade}
                 Carrinho = Carrinho.append(produto, ignore_index=True)
+                flash(f"Você adicionou o produto {mask.nome.values[0]} com sucesso!")
                 df.loc[mask2, 'quantidade'] =  df.loc[mask2, 'quantidade'].values[0] - quantidade
                 print(df)
             else:
                 print("Pois é")
                 Carrinho.loc[maskNome, 'quantidade'] = Carrinho[maskNome]["quantidade"].values[0] + quantidade
                 df.loc[mask2, 'quantidade'] =  df.loc[mask2, 'quantidade'].values[0] - quantidade
+                flash(f"Você adicionou o produto {mask.nome.values[0]} com sucesso!")
                 print(df)
     else:
         print("Não deu")

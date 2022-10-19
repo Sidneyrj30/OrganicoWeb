@@ -38,7 +38,7 @@
                 </div>
             </div>
         </section>
-        <h2 class="text-center mb-3">Total: R${{total}}</h2>
+        <h2 class="text-center mb-3">Total: R${{"%.2f" | format(total)}}</h2>
         <div class="text-center"><a class="btn btn-success mt-auto" href='/gerarRelatorio'>Finalizar compra</a></div>
     {% else %}
         <div class="jumbotron text-center mx-auto" style="margin-top: 100px; margin-bottom: 270px;">
