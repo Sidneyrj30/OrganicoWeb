@@ -73,7 +73,7 @@
                 <a href="/carrinho" class="btn btn-outline-dark" style="text-decoration:none;" >
                     Carrinho
                     <div class="badge bg-dark text-white ms-1 rounded-pill">
-                      {{carrinho|length}} 
+                      {{ carrinho | sum(attribute='quantidade') }} 
                     </div>
                 </a> 
         </div>
