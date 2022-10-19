@@ -1,5 +1,6 @@
 from flask import Flask, render_template,request,redirect, flash
 import pandas as pd
+import uuid
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "my super secret key"
@@ -32,18 +33,15 @@ def cadastro():
 def cadastrado():
     global df
     argumentos = request.args.to_dict(True)
-    #print(argumentos)
-    if df.empty:
-        argumentos['id'] = [1]
-    else:
-        argumentos['id'] = [df['id'].max() + 1]
-    df = pd.concat([df, pd.DataFrame(argumentos)], ignore_index=True)
+    argumentos['id'] = str(uuid.uuid4())
+    df = pd.concat([df, pd.DataFrame(argumentos, index=[0])], ignore_index=True)
+    print(df)
     df.to_json('data.json', orient='records')
     return redirect('/cadastro')
 
 @app.route('/deletar/<id>')
 def deletar(id):
-    mask_id = df[df['id'] == int(id)].index
+    mask_id = df[df['id'] == id].index
     df.drop(mask_id, axis=0, inplace=True)
     df.to_json('data.json', orient='records')
     return redirect('/listar_produtos')
@@ -61,22 +59,20 @@ def adicionarCarrinho(id):
     global Carrinho
     df = pd.read_json('data.json')
     quantidade = int(request.args['quantidade'])
-    mask = df[df['id'] == int(id)]
-    mask2 = df['id'] == int(id)
+    mask = df[df['id'] == id]
+    mask2 = df['id'] == id
     nomeWeb = mask.values[0][1] # mask.values é um array dentro de um array
     if mask.quantidade.values[0] > 0:
         if Carrinho.empty:# se o carrinho estiver vazio
-            id = 1
-            produto = {"id": id , "nome": mask.nome.values[0], "preco": mask.preco.values[0], "quantidade": quantidade}
-            Carrinho = Carrinho.append(produto, ignore_index=True)
-            flash(f"Você adicionou o produto {mask.nome.values[0]} com sucesso!")
-            df.loc[mask2, 'quantidade'] =  df.loc[mask2, 'quantidade'].values[0] - quantidade #diminuir quantidade produto
-            print(df)
+             produto = {"id": mask.id.values[0] , "nome": mask.nome.values[0], "preco": mask.preco.values[0], "quantidade": quantidade}
+             Carrinho = Carrinho.append(produto, ignore_index=True)
+             flash(f"Você adicionou o produto {mask.nome.values[0]} com sucesso!")
+             df.loc[mask2, 'quantidade'] =  df.loc[mask2, 'quantidade'].values[0] - quantidade #diminuir quantidade produto
+             print(df)
         else:
             maskNome = Carrinho['nome'] == nomeWeb
             if Carrinho[maskNome].empty:
-                id = Carrinho['id'].max() + 1
-                produto = {"id": id , "nome": mask.nome.values[0], "preco": mask.preco.values[0], "quantidade": quantidade}
+                produto = {"id": mask.id.values[0] , "nome": mask.nome.values[0], "preco": mask.preco.values[0], "quantidade": quantidade}
                 Carrinho = Carrinho.append(produto, ignore_index=True)
                 flash(f"Você adicionou o produto {mask.nome.values[0]} com sucesso!")
                 df.loc[mask2, 'quantidade'] =  df.loc[mask2, 'quantidade'].values[0] - quantidade
@@ -108,17 +104,15 @@ def carrinho():
 
 @app.route('/deletarCarrinho/<id>')
 def deletarCarrinho(id):
-    mask_id = Carrinho[Carrinho['id'] == int(id)].index   
-#=======================================================================
-    mask = Carrinho['id'] == int(id)
+    mask_id = Carrinho[Carrinho['id'] == id].index   
+    mask = Carrinho['id'] == id
     nomeWeb = Carrinho[mask].values[0][1]
     maskNome = df['nome'] == nomeWeb
     
     print(df.loc[maskNome, 'quantidade'].values[0])
     quantidadeCarrinho = Carrinho[mask]["quantidade"].values[0]
-
     df.loc[maskNome, 'quantidade'] =  df.loc[maskNome, 'quantidade'].values[0] + quantidadeCarrinho
-#========================================================================
+
     Carrinho.drop(mask_id, axis=0, inplace=True)
     df.to_json('data.json', orient='records')
     return redirect('/carrinho')
@@ -140,13 +134,7 @@ def gerarRelatorio():
                 print("Ok, esse existe")
                 Relatorio.loc[resultado, "quantidade"] = Relatorio[resultado]["quantidade"].values[0] + produto['quantidade']  
     Carrinho = pd.DataFrame([]) 
-    # global Relatorio
-    # global Carrinho
-    # Relatorio = pd.concat([Relatorio, Carrinho.copy()])
-    # Carrinho = pd.DataFrame([])
-    # print(Relatorio)
     return redirect('/carrinho')
-#=====================================================
 
 @app.route('/relatorio')
 def relatorio():
@@ -155,9 +143,7 @@ def relatorio():
     total = 0
     for produto in relatorio_dict:
         total = total + produto["quantidade"] * produto["preco"]
-    return render_template('relatorio.html', 
-    relatorio = Relatorio.to_dict('records'), carrinho = Carrinho.to_dict('records'),
-    total=total) 
+    return render_template('relatorio.html', relatorio = Relatorio.to_dict('records'), carrinho = Carrinho.to_dict('records'),total=total) 
 
 if __name__ == '__main__':
     app.run(debug=True)
