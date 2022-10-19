@@ -9,7 +9,7 @@
             </div>
         </header>
     {% if carrinho|length > 0 %}
-        <section class="py-5">
+        <section class="pt-5">
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                     {% for item in carrinho %}
@@ -30,7 +30,7 @@
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href='/deletarCarrinho/{{item.id}}'>Deletar do carrinho</a></div>
+                                <div class="text-center"><a class="btn btn-danger mt-auto" href='/deletarCarrinho/{{item.id}}'>Deletar do carrinho</a></div>
                             </div>
                         </div>
                     </div>
@@ -38,7 +38,8 @@
                 </div>
             </div>
         </section>
-        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href='/gerarRelatorio'>Finalizar compra</a></div>
+        <h2 class="text-center mb-3">Total: R${{total}}</h2>
+        <div class="text-center"><a class="btn btn-success mt-auto" href='/gerarRelatorio'>Finalizar compra</a></div>
     {% else %}
         <div class="jumbotron text-center mx-auto" style="margin-top: 100px; margin-bottom: 270px;">
             <div class="container">

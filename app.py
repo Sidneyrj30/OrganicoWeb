@@ -97,7 +97,11 @@ def adicionarCarrinho(id):
 
 @app.route('/carrinho')
 def carrinho():
-    return render_template('carrinho.html', carrinho = Carrinho.to_dict('records'))
+    total = 0
+    carrinho_dict = Carrinho.to_dict('records')
+    for produto in carrinho_dict:
+        total = total + produto["quantidade"] * produto["preco"]
+    return render_template('carrinho.html', carrinho = Carrinho.to_dict('records'), total = total)
 
 @app.route('/deletarCarrinho/<id>')
 def deletarCarrinho(id):
