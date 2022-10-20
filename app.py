@@ -78,7 +78,6 @@ def adicionarCarrinho(id):
                 df.loc[mask2, 'quantidade'] =  df.loc[mask2, 'quantidade'].values[0] - quantidade
                 print(df)
             else:
-                print("Pois é")
                 Carrinho.loc[maskNome, 'quantidade'] = Carrinho[maskNome]["quantidade"].values[0] + quantidade
                 df.loc[mask2, 'quantidade'] =  df.loc[mask2, 'quantidade'].values[0] - quantidade
                 flash(f"Você adicionou o produto {mask.nome.values[0]} com sucesso!")
@@ -87,12 +86,6 @@ def adicionarCarrinho(id):
         print("Não deu")
     df.to_json('data.json', orient='records')
     return redirect('/vendas')
-    # # mask_id = df[df['id'] == int(id)]
-    # # Carrinho = pd.concat([Carrinho, mask_id])
-    # # # print(Carrinho)
-    # # print(mask_id.nome.values[0])
-    # # flash(f"Olá você adicionou o produto {mask_id.nome.values[0]} com sucesso!")
-    # # return redirect('/vendas')
 
 @app.route('/carrinho')
 def carrinho():
